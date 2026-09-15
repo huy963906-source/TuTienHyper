@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TuTiên Plugin v4 — Hướng Dẫn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06080f;--bg2:#0b0f1c;--surface:rgba(11,15,28,.95);
+  --b:#3d5aff;--b2:#6b86ff;--b3:rgba(61,90,255,.15);
+  --pu:#9333ea;--cy:#22d3ee;--gn:#10b981;--rd:#ef4444;--go:#f59e0b;
+  --tx:#e2e8f8;--mu:#8b96b8;--fa:#374163;
+  --bd:rgba(61,90,255,.18);--nav:rgba(6,8,15,.88);
+  --r:10px;--T:cubic-bezier(.4,0,.2,1);
+}
+[data-theme=light]{
+  --bg:#f1f5ff;--bg2:#fff;--surface:rgba(255,255,255,.97);
+  --tx:#0f172a;--mu:#475569;--fa:#cbd5e1;
+  --bd:rgba(61,90,255,.14);--nav:rgba(255,255,255,.9);--b3:rgba(61,90,255,.08);
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:rgba(61,90,255,.3);border-radius:99px}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--tx);
+  min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(rgba(61,90,255,.04) 1px,transparent 1px);
+  background-size:30px 30px;transition:background .35s,color .25s}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--nav);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:0 2rem;
+  display:flex;align-items:center;gap:1rem;height:58px;transition:background .35s}
+.logo{font-weight:800;font-size:1.05rem;color:var(--b2);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.logo span{background:linear-gradient(135deg,var(--b),var(--pu));border-radius:8px;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.nav-tabs{display:flex;gap:2px;flex:1;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.ntab{padding:6px 14px;border-radius:7px;font-size:12.5px;font-weight:600;
+  white-space:nowrap;border:none;background:transparent;color:var(--mu);
+  cursor:pointer;transition:all .18s;letter-spacing:.02em}
+.ntab:hover{background:var(--b3);color:var(--b2)}
+.ntab.on{background:var(--b3);color:var(--b2);border:1px solid rgba(61,90,255,.25)}
+.tbtn{width:34px;height:34px;border-radius:8px;border:1px solid var(--bd);
+  background:var(--b3);font-size:16px;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.tbtn:hover{background:rgba(61,90,255,.2)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.section{display:none;animation:fu .3s ease both}
+.section.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* HEADINGS */
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.sh-icon{width:38px;height:38px;border-radius:9px;background:var(--b3);
+  border:1px solid rgba(61,90,255,.25);display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0}
+.sh-title{font-size:1.15rem;font-weight:800;letter-spacing:-.01em}
+.sh-sub{font-size:.78rem;color:var(--mu);margin-top:2px}
+
+/* CARDS */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:2rem}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:2rem}
+.card{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);
+  padding:1rem 1.1rem;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:rgba(61,90,255,.4);box-shadow:0 4px 20px rgba(61,90,255,.1)}
+.card-title{font-size:.82rem;font-weight:700;color:var(--b2);margin-bottom:.35rem;letter-spacing:.05em;text-transform:uppercase}
+.card-desc{font-size:.82rem;color:var(--mu);line-height:1.6}
+
+/* PLACEHOLDER TABLE */
+.ph-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:2rem}
+.ph-table th{background:var(--b3);color:var(--b2);padding:9px 14px;
+  text-align:left;font-size:.73rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;border-bottom:1px solid var(--bd)}
+.ph-table th:first-child{border-radius:var(--r) 0 0 0}
+.ph-table th:last-child{border-radius:0 var(--r) 0 0}
+.ph-table td{padding:8px 14px;border-bottom:1px solid rgba(61,90,255,.07);vertical-align:top}
+.ph-table tr:last-child td{border-bottom:none}
+.ph-table tr:hover td{background:rgba(61,90,255,.04)}
+.ph-code{font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  background:rgba(61,90,255,.12);color:#93b4ff;border-radius:5px;
+  padding:2px 7px;white-space:nowrap}
+.ph-ex{font-family:'JetBrains Mono',monospace;font-size:.73rem;
+  color:var(--gn);background:rgba(16,185,129,.08);border-radius:4px;
+  padding:1px 6px;white-space:nowrap}
+.ph-group{background:rgba(61,90,255,.06);padding:8px 14px;
+  font-size:.72rem;font-weight:700;color:var(--b2);letter-spacing:.1em;
+  text-transform:uppercase;border-bottom:1px solid var(--bd)}
+
+/* CMD CARDS */
+.cmd-card{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:8px;display:flex;gap:14px;align-items:flex-start}
+.cmd-left{flex-shrink:0;min-width:210px}
+.cmd-name{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;color:var(--go)}
+.cmd-alias{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--mu);margin-top:2px}
+.cmd-desc{font-size:.82rem;color:var(--mu);line-height:1.55;flex:1}
+.cmd-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 7px;
+  border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
+.b-op{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+.b-req{background:rgba(245,158,11,.1);color:var(--go);border:1px solid rgba(245,158,11,.2)}
+.b-new{background:rgba(16,185,129,.1);color:var(--gn);border:1px solid rgba(16,185,129,.2)}
+.b-mm{background:rgba(147,51,234,.1);color:#c084fc;border:1px solid rgba(147,51,234,.2)}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:12px;margin-bottom:2rem}
+.step{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);
+  padding:1rem 1.1rem;display:flex;gap:1rem;align-items:flex-start}
+.step-n{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;
+  color:rgba(61,90,255,.3);flex-shrink:0;min-width:28px;line-height:1.4}
+.step-body{flex:1}
+.step-title{font-size:.9rem;font-weight:700;margin-bottom:.25rem}
+.step-desc{font-size:.81rem;color:var(--mu);line-height:1.65}
+.step-desc code{font-family:'JetBrains Mono',monospace;font-size:.76rem;
+  background:var(--b3);border-radius:4px;padding:1px 5px;color:#93b4ff}
+.step.warn{border-color:rgba(239,68,68,.25)}
+.step.warn .step-n{color:rgba(239,68,68,.4)}
+.step.ok{border-color:rgba(16,185,129,.2)}
+.step.ok .step-n{color:rgba(16,185,129,.4)}
+
+/* CODE BLOCK */
+.code-block{font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  background:#040508;color:#94a3b8;border:1px solid rgba(61,90,255,.15);
+  border-radius:var(--r);padding:1rem 1.1rem;margin:.75rem 0;
+  line-height:1.85;overflow-x:auto;white-space:pre;position:relative}
+[data-theme=light] .code-block{background:#0f172a}
+.code-block .cm{color:#3d5a4a}
+.code-block .kw{color:#f59e0b}
+.code-block .st{color:#86efac}
+.code-block .ph{color:#93b4ff}
+
+/* DIFF TABLE */
+.diff-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:1.5rem}
+.diff-table th{background:var(--b3);color:var(--b2);padding:9px 14px;
+  text-align:left;font-size:.73rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  border-bottom:1px solid var(--bd)}
+.diff-table td{padding:8px 14px;border-bottom:1px solid rgba(61,90,255,.07)}
+.diff-table tr:last-child td{border-bottom:none}
+.diff-table tr:hover td{background:rgba(61,90,255,.04)}
+.yes{color:var(--gn);font-weight:600} .no{color:var(--fa)} .part{color:var(--go)}
+
+/* ALERT */
+.alert{border-left:2px solid;border-radius:0 var(--r) var(--r) 0;
+  padding:10px 14px;font-size:.82rem;line-height:1.65;margin:.75rem 0}
+.alert-b{background:rgba(61,90,255,.07);border-color:var(--b);color:#93b4ff}
+.alert-g{background:rgba(16,185,129,.07);border-color:var(--gn);color:var(--gn)}
+.alert-r{background:rgba(239,68,68,.07);border-color:var(--rd);color:#f87171}
+.alert-y{background:rgba(245,158,11,.07);border-color:var(--go);color:var(--go)}
+
+/* COPY BTN */
+.copy-btn{position:absolute;top:8px;right:8px;font-size:11px;padding:3px 9px;
+  background:rgba(61,90,255,.15);border:1px solid rgba(61,90,255,.25);
+  border-radius:5px;color:var(--b2);cursor:pointer;font-family:inherit;transition:all .2s}
+.copy-btn:hover{background:rgba(61,90,255,.3)}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:1.25rem}
+.search-wrap input{width:100%;padding:9px 14px 9px 38px;
+  background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);
+  font-family:inherit;font-size:.84rem;color:var(--tx);outline:none;
+  transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--b)}
+.search-wrap input::placeholder{color:var(--fa)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fa);font-size:.9rem;pointer-events:none}
+
+/* SECTION TAG */
+.stag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;
+  background:var(--b3);border:1px solid rgba(61,90,255,.2);border-radius:99px;
+  font-size:.72rem;font-weight:700;color:var(--b2);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:1.25rem}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .cmd-card{flex-direction:column;gap:6px}
+  .cmd-left{min-width:unset}
+  .nav-tabs .ntab:not(.on){display:none}
+  main{padding:1.5rem 1rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span>☯</span> TuTiên v4</div>
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="goTab('overview',this)">Tổng quan</button>
+    <button class="ntab" onclick="goTab('install',this)">Cài đặt</button>
+    <button class="ntab" onclick="goTab('obtain',this)">Lấy Trấn Thiên Giáp</button>
+    <button class="ntab" onclick="goTab('player',this)">Lệnh người chơi</button>
+    <button class="ntab" onclick="goTab('admin',this)">Lệnh Admin</button>
+    <button class="ntab" onclick="goTab('placeholder',this)">PlaceholderAPI</button>
+    <button class="ntab" onclick="goTab('compare',this)">FREE vs Premium</button>
+  </div>
+  <button class="tbtn" onclick="toggleTheme()" title="Đổi theme" id="tbtn">☀️</button>
+</nav>
+
+<main>
+
+<!-- ════════════════ TỔNG QUAN ════════════════ -->
+<div id="tab-overview" class="section on">
+  <div class="stag">✦ Tu Tiên Plugin v4.0</div>
+  <div class="sh"><div class="sh-icon">📜</div><div><div class="sh-title">Tổng quan tính năng</div><div class="sh-sub">Hệ thống tu tiên đầy đủ cho Minecraft 1.21.1</div></div></div>
+
+  <div class="grid-2">
+    <div class="card"><div class="card-title">⚡ Cảnh Giới & Tu Luyện</div><div class="card-desc">100+ tầng cảnh giới (Nhân → Thủy Tinh Vĩnh Hằng), 8 cấp nhỏ mỗi tầng. Thiên Kiếp nhiều sóng, tỉ lệ khó tăng theo cảnh giới.</div></div>
+    <div class="card"><div class="card-title">☠ Boss Arena</div><div class="card-desc">18 tầng Siêu Cấp + 30 tầng Tối Thượng: khi đột phá vòng BARRIER xuất hiện, solo boss từ Wither Skeleton → 4x Omega Warden (90.000❤).</div></div>
+    <div class="card"><div class="card-title">🗡️ 12 Kỹ Năng</div><div class="card-desc">Kiếm Khí Trảm, Tốc Kiếm, Thiên Sát, Linh Hỏa Cầu, Đóng Băng, Pháp Trận, Linh Dược, Phù Hộ Trận, Giải Độc, Mãnh Độc Tán, Ám Sát, Độc Trận.</div></div>
+    <div class="card"><div class="card-title">💎 83 Pháp Bảo</div><div class="card-desc">6 tier (Địa → Tiên Phẩm), 6 Pháp Bảo Bản Mệnh không thể mất khi chết, Trấn Thiên Giáp đặc biệt giảm 50% damage khi giữ trong túi.</div></div>
+    <div class="card"><div class="card-title">🧬 13 Linh Căn</div><div class="card-desc">Kim/Mộc/Thủy/Hỏa/Thổ + Lôi/Băng/Phong/Âm/Quang + 3 Siêu Cấp (Hỗn/Huyết/Cổ Ho) + Thiên Nhất/Nguyên Thủy/Vô Thượng Căn.</div></div>
+    <div class="card"><div class="card-title">🐉 12 Tộc</div><div class="card-desc">Người, Thú Hoa, Yêu, Thần, Linh, Long + 6 siêu hiếm: Phượng Hoàng (hồi sinh), Kim Cương (bất tử 5s), Đạo Tộc (tự đột phá), Thủy Tinh (x3 stat).</div></div>
+    <div class="card"><div class="card-title">☯ 4 Đạo Path</div><div class="card-desc">Chính Đạo (thiên kiếp -15%), Ma Đạo (ATK +20%, thiên kiếp +20%), Sĩ Vương (LK x5 khi thiền), Lọ Vương (DEF +60%, bất tử khi HP &lt;20%).</div></div>
+    <div class="card"><div class="card-title">📖 Quest & Danh Hiệu</div><div class="card-desc">Daily/Weekly quest tự reset, 22 danh hiệu mở khoá qua thành tích, 6 Thiên Mệnh ngẫu nhiên (Mệnh Kỳ/Tài/Chiến/Họa/Tuệ/Long).</div></div>
+    <div class="card"><div class="card-title">📊 Hệ thống Karma</div><div class="card-desc">Công Đức giảm độ khó Thiên Kiếp tối đa 30%, Nghiệp Lực tăng ATK +40% nhưng Thiên Kiếp cực khó. Tâm Ma GUI 8 câu hỏi khi đột phá.</div></div>
+    <div class="card"><div class="card-title">🔌 MythicMobs Hook</div><div class="card-desc">Boss Arena dùng MM mob (11 template), 8 Realm Aura theo cảnh giới, 7 Race/Linh Căn effect. Tự fallback vanilla nếu không có MM.</div></div>
+    <div class="card"><div class="card-title">📈 MythicLib Stats</div><div class="card-desc">6 custom stat: linh_khi_regen, phap_cong, phap_phong, linh_khi_max, boss_dmg_reduce, crit_lk_mult. Equipment MM cộng trực tiếp vào stat.</div></div>
+    <div class="card"><div class="card-title">🏷️ PlaceholderAPI</div><div class="card-desc">30 placeholder: cảnh giới, LK (bar, %, rút gọn), Linh Thạch, Tộc, Linh Căn, Karma, stat chiến đấu, trạng thái. Dùng được trên Scoreboard/Tab/Chat.</div></div>
+  </div>
+
+  <div class="alert alert-b">Paper 1.21.1+ · Java 21+ · Vault + EssentialsX · WorldEdit 7.3+ là bắt buộc. MythicMobs/MythicLib/PlaceholderAPI là tùy chọn.</div>
+</div>
+
+<!-- ════════════════ CÀI ĐẶT ════════════════ -->
+<div id="tab-install" class="section">
+  <div class="sh"><div class="sh-icon">⚙️</div><div><div class="sh-title">Hướng dẫn cài đặt</div><div class="sh-sub">Từng bước từ A-Z</div></div></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">01</div>
+      <div class="step-body">
+        <div class="step-title">Cài Paper Server 1.21.1+</div>
+        <div class="step-desc">Tải tại <strong>papermc.io</strong>. Bắt buộc dùng Paper — Spigot thuần thiếu Paper API. Cần Java 21+.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <div class="step-body">
+        <div class="step-title">Cài plugin bắt buộc</div>
+        <div class="step-desc">Copy vào <code>plugins/</code>: <code>Vault.jar</code> + <code>EssentialsX.jar</code> + <code>WorldEdit-7.3+.jar</code></div>
+      </div>
+    </div>
+    <div class="step ok">
+      <div class="step-n">03</div>
+      <div class="step-body">
+        <div class="step-title">Cài plugin tùy chọn (khuyến khích)</div>
+        <div class="step-desc"><code>PlaceholderAPI.jar</code> — để dùng 30 placeholder trên Scoreboard/Tab<br>
+        <code>MythicMobs.jar</code> — boss đẹp hơn (FREE 4.x hoặc Premium 5.x)<br>
+        <code>MythicLib.jar</code> — chỉ cần với MM Premium 5.x<br>
+        <code>WorldGuard.jar</code> — bảo vệ vùng Arena</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">04</div>
+      <div class="step-body">
+        <div class="step-title">Copy TuTienPlugin.jar vào plugins/</div>
+        <div class="step-desc">Lấy JAR từ thư mục <code>target/</code> trong RAR. Khởi động server 1 lần → tắt → sinh <code>config.yml</code>.</div>
+      </div>
+    </div>
+    <div class="step ok">
+      <div class="step-n">05</div>
+      <div class="step-body">
+        <div class="step-title">Copy YAML cho MythicMobs (nếu dùng)</div>
+        <div class="step-desc">Trong RAR → <code>src/main/resources/mythicmobs/</code>:</div>
+        <div class="code-block"><span class="st">Mobs/TT_Bosses.yml</span>   →  plugins/MythicMobs/Mobs/TT_Bosses.yml
+<span class="st">Skills/TT_Skills.yml</span> →  plugins/MythicMobs/Skills/TT_Skills.yml</div>
+        <div class="step-desc">Sau khi copy: <code>/mm reload</code> trong game.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">06</div>
+      <div class="step-body">
+        <div class="step-title">Khởi động & kiểm tra console</div>
+        <div class="step-desc">Nếu hook hoạt động sẽ thấy trong console:</div>
+        <div class="code-block"><span class="st">[TuTienPlugin] ✅ PlaceholderAPI — 30 placeholder đã đăng ký.</span>
+<span class="st">[TuTienPlugin] ✅ MythicLib kết nối — 6 custom stats đã đăng ký.</span>
+<span class="st">[TuTienPlugin] ✅ MythicMobs kết nối — Boss Arena & Aura sẵn sàng.</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">07</div>
+      <div class="step-body">
+        <div class="step-title">Thiết lập ban đầu</div>
+        <div class="code-block"><span class="cm"># Tạo Linh Mạch đầu tiên (LK x3.5 trong vùng)</span>
+<span class="kw">/addlinhzone</span> LinhSon 20
+
+<span class="cm"># Cấp quyền admin cho staff</span>
+<span class="kw">/lp</span> group admin permission set tutien.admin true
+
+<span class="cm"># Reload config sau khi chỉnh sửa</span>
+<span class="kw">/ttadmin</span> reload</div>
+      </div>
+    </div>
+    <div class="step warn">
+      <div class="step-n">⚠</div>
+      <div class="step-body">
+        <div class="step-title">Nếu config chỉ có vài dòng (config cũ)</div>
+        <div class="step-desc">Xóa file <code>plugins/TuTienPlugin/config.yml</code> → restart server → plugin tự sinh config đầy đủ 22 section.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ LẤY GIÁP ════════════════ -->
+<div id="tab-obtain" class="section">
+  <div class="sh"><div class="sh-icon">🛡️</div><div><div class="sh-title">Cách lấy Trấn Thiên Giáp</div><div class="sh-sub">Giáp đặc biệt giảm 50% damage — kể cả Thiên Kiếp — chỉ cần giữ trong túi đồ</div></div></div>
+
+  <div class="alert alert-g">Trấn Thiên Giáp giảm 50% mọi sát thương nhận vào kể cả sóng Thiên Kiếp. Chỉ cần trong túi đồ — không cần mặc vào.</div>
+
+  <div class="sh" style="margin-top:1.5rem"><div class="sh-icon">1️⃣</div><div><div class="sh-title">Cách 1 — Admin cấp trực tiếp</div><div class="sh-sub">Lệnh nhanh nhất, dùng cho test hoặc reward</div></div></div>
+
+  <div class="code-block" style="position:relative">
+<button class="copy-btn" onclick="cp(this)">Copy</button><span class="cm"># Cú pháp:</span>
+<span class="kw">/ttadmin give</span> <span class="ph">&lt;tên_người_chơi&gt;</span> <span class="st">TRAN_THIEN_GIAP</span> 1
+
+<span class="cm"># Ví dụ cấp cho Steve:</span>
+<span class="kw">/ttadmin give</span> Steve <span class="st">TRAN_THIEN_GIAP</span> 1
+
+<span class="cm"># Cấp cho chính mình (OP):</span>
+<span class="kw">/ttadmin give</span> @p <span class="st">TRAN_THIEN_GIAP</span> 1
+  </div>
+
+  <div class="sh" style="margin-top:1.5rem"><div class="sh-icon">2️⃣</div><div><div class="sh-title">Cách 2 — Rèn đúc từ Pháp Bảo + Linh Thạch</div><div class="sh-sub">Con đường tu luyện chính thống</div></div></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">①</div>
+      <div class="step-body">
+        <div class="step-title">Cần đạt Thánh Giới trở lên</div>
+        <div class="step-desc">Trấn Thiên Giáp thuộc tier Tiên Phẩm — yêu cầu người chơi đã đạt ít nhất <strong>Thánh Giới</strong> mới có thể sở hữu và sử dụng hiệu quả.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">②</div>
+      <div class="step-body">
+        <div class="step-title">Lấy Pháp Bảo Địa/Hạ Phẩm</div>
+        <div class="step-desc">Giết mob, boss, hoặc dùng <code>/ttadmin give &lt;player&gt; TRAN_THIEN_GIAP 1</code> để nhận bản Địa Phẩm ban đầu.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">③</div>
+      <div class="step-body">
+        <div class="step-title">Rèn đúc lên tier cao hơn với /renduc</div>
+        <div class="step-desc">Mỗi lần rèn tốn Linh Thạch, lên 1 tier. Cần rèn 5 lần để đạt Tiên Phẩm:</div>
+        <div class="code-block"><span class="cm"># Giá rèn từng tier (cấu hình trong config.yml):</span>
+Địa Phẩm → Hạ Phẩm:    <span class="kw">miễn phí</span>
+Hạ Phẩm  → Trung Phẩm: <span class="st">300 LT</span>   (tỉ lệ 90%)
+Trung     → Thượng Phẩm:<span class="st">800 LT</span>   (tỉ lệ 75%)
+Thượng    → Đế Phẩm:    <span class="st">2.000 LT</span> (tỉ lệ 50%)
+Đế Phẩm  → Tiên Phẩm:  <span class="st">8.000 LT</span> (tỉ lệ 25%)</div>
+      </div>
+    </div>
+    <div class="step ok">
+      <div class="step-n">④</div>
+      <div class="step-body">
+        <div class="step-title">Kéo vào bất kỳ slot nào trong túi</div>
+        <div class="step-desc">Sau khi có giáp — <strong>không cần mặc</strong>. Chỉ cần để trong túi đồ (inventory) là tự động giảm 50% sát thương kể cả Thiên Kiếp.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh" style="margin-top:1.5rem"><div class="sh-icon">3️⃣</div><div><div class="sh-title">Cách 3 — Drop từ Boss Arena</div></div></div>
+  <div class="card"><div class="card-desc">Boss Tier 5+ (từ Warden trở lên) có xác suất drop Pháp Bảo ngẫu nhiên. Tỉ lệ cao hơn nếu cài MythicMobs. Tăng drop rate trong <code>config.yml → phabao.drop-rate-multiplier</code>.</div></div>
+
+  <div class="alert alert-y" style="margin-top:1rem">Lưu ý: Trấn Thiên Giáp nhận biết bằng PDC tag <code>pb_type = TRAN_THIEN_GIAP</code> (không phải tên hiển thị). Nếu tạo item bằng công cụ bên ngoài mà không gắn tag này thì giáp sẽ không hoạt động.</div>
+</div>
+
+<!-- ════════════════ NGƯỜI CHƠI ════════════════ -->
+<div id="tab-player" class="section">
+  <div class="sh"><div class="sh-icon">👤</div><div><div class="sh-title">Lệnh người chơi</div><div class="sh-sub">Không cần quyền đặc biệt</div></div></div>
+
+  <div class="search-wrap"><span class="search-icon">🔍</span><input id="psearch" placeholder="Tìm lệnh..." oninput="filterCmds('player',this.value)"></div>
+
+  <div id="player-cmds">
+    <div class="cmd-card" data-kw="tutien tt tx dao info items phabao top chon"><div class="cmd-left"><div class="cmd-name">/tutien</div><div class="cmd-alias">/tt &nbsp; /tx</div></div><div class="cmd-desc">Lệnh chính — xem info nhân vật, chọn đường tu, xem pháp bảo, bảng xếp hạng.</div></div>
+    <div class="cmd-card" data-kw="dotpha dp breakthrough boss arena thien kiep"><div class="cmd-left"><div class="cmd-name">/dotpha</div><div class="cmd-alias">/dp</div></div><div class="cmd-desc">Bắt đầu Thiên Kiếp đột phá. Phải đủ LK. Tầng Siêu Cấp/Tối Thượng → Boss Arena xuất hiện!</div></div>
+    <div class="cmd-card" data-kw="boqua bq skip"><div class="cmd-left"><div class="cmd-name">/boqua</div><div class="cmd-alias">/bq</div></div><div class="cmd-desc">Bỏ qua thông báo đột phá, nhắc lại sau.</div></div>
+    <div class="cmd-card" data-kw="linhkhi lk bar percent"><div class="cmd-left"><div class="cmd-name">/linhkhi</div><div class="cmd-alias">/lk</div></div><div class="cmd-desc">Xem thanh Linh Khí, phần trăm, ước tính thời gian đầy.</div></div>
+    <div class="cmd-card" data-kw="thiendinh td meditate linh mach"><div class="cmd-left"><div class="cmd-name">/thiendinh</div><div class="cmd-alias">/td</div></div><div class="cmd-desc">Thiền định hấp thụ LK tự động. Trong Linh Mạch: tốc độ x3.5. Sĩ Vương: x6.</div></div>
+    <div class="cmd-card" data-kw="skill ky nang cooldown"><div class="cmd-left"><div class="cmd-name">/skill</div></div><div class="cmd-desc">Xem kỹ năng đang sở hữu, cooldown, điều kiện cảnh giới.</div></div>
+    <div class="cmd-card" data-kw="renduc rd forge phabao nang cap tier"><div class="cmd-left"><div class="cmd-name">/renduc</div><div class="cmd-alias">/rd</div></div><div class="cmd-desc">Rèn đúc nâng tier Pháp Bảo. Cần Linh Thạch. Địa → Hạ → Trung → Thượng → Đế → Tiên Phẩm.</div></div>
+    <div class="cmd-card" data-kw="trieukiem tk sword fly ban thanh"><div class="cmd-left"><div class="cmd-name">/trieukiem</div><div class="cmd-alias">/tk &nbsp; <span class="cmd-badge b-req">Ban Thánh+</span></div></div><div class="cmd-desc">Triệu hồi Kiếm Bay — cưỡi kiếm di chuyển trên không.</div></div>
+    <div class="cmd-card" data-kw="aura tuvi on off canh gioi mythicmobs"><div class="cmd-left"><div class="cmd-name">/aura</div><div class="cmd-alias">/tuvi &nbsp; <span class="cmd-badge b-mm">MM Aura</span></div></div><div class="cmd-desc">Bật/tắt vòng Tu Vi phát sáng. Với MythicMobs: particle đẹp, tự đổi theo cảnh giới.</div></div>
+    <div class="cmd-card" data-kw="luyen dan ld alchemy craft elixir"><div class="cmd-left"><div class="cmd-name">/luyen</div><div class="cmd-alias">/ld</div></div><div class="cmd-desc">Mở GUI luyện đan. 28+ công thức Linh Đan.</div></div>
+    <div class="cmd-card" data-kw="thao herb tien thao collect drop"><div class="cmd-left"><div class="cmd-name">/thao</div><div class="cmd-alias">/herb</div></div><div class="cmd-desc">Xem kho Tiên Thảo. Thu thập bằng cách phá block hoặc chuột phải (CD 3 phút).</div></div>
+    <div class="cmd-card" data-kw="gongfa gf cong phap doi change"><div class="cmd-left"><div class="cmd-name">/gongfa</div><div class="cmd-alias">/gf</div></div><div class="cmd-desc">Xem và thay đổi Công Pháp tu luyện. Ảnh hưởng tốc độ LK và chỉ số chiến đấu.</div></div>
+    <div class="cmd-card" data-kw="toc race linh can lingcan"><div class="cmd-left"><div class="cmd-name">/toc</div></div><div class="cmd-desc">Xem thông tin Tộc và Linh Căn: chỉ số bonus, kỹ năng thụ động.</div></div>
+    <div class="cmd-card" data-kw="linhthach lt reroll economy money"><div class="cmd-left"><div class="cmd-name">/linhthach</div><div class="cmd-alias">/lt</div></div><div class="cmd-desc">Xem Linh Thạch, tặng, reroll Linh Căn (500 LT) hoặc Tộc (2.000 LT).</div></div>
+    <div class="cmd-card" data-kw="tui bag wallet nap rut unlimited"><div class="cmd-left"><div class="cmd-name">/tui</div></div><div class="cmd-desc">Túi Linh Thạch Vô Hạn — nạp/rút/tặng bất kỳ lúc nào.</div></div>
+    <div class="cmd-card" data-kw="auction ah nha dau gia sell buy"><div class="cmd-left"><div class="cmd-name">/auction</div><div class="cmd-alias">/ah</div></div><div class="cmd-desc">Nhà Đấu Giá — đăng bán Pháp Bảo/Linh Đan, mua từ người khác.</div></div>
+    <div class="cmd-card" data-kw="trade giao dich doi trao safe"><div class="cmd-left"><div class="cmd-name">/trade</div></div><div class="cmd-desc">Giao dịch an toàn 2 bên — cần xác nhận trước khi hoàn tất.</div></div>
+    <div class="cmd-card" data-kw="tongmon tm sect tao moi kick rank kho"><div class="cmd-left"><div class="cmd-name">/tongmon</div><div class="cmd-alias">/tm</div></div><div class="cmd-desc">Quản lý Tông Môn — tạo, mời, kick, kho, xếp hạng. Chi phí: 1.000 LT.</div></div>
+    <div class="cmd-card" data-kw="party nhom group invite boss cung nhau"><div class="cmd-left"><div class="cmd-name">/party</div><div class="cmd-alias">/nhom</div></div><div class="cmd-desc">Tạo nhóm cùng tu tiên — chia sẻ buff, Boss Arena hỗ trợ nhau.</div></div>
+    <div class="cmd-card" data-kw="quest nhiemvu daily weekly nhiem vu"><div class="cmd-left"><div class="cmd-name">/quest</div><div class="cmd-alias">/nhiemvu</div></div><div class="cmd-desc">Xem nhiệm vụ Daily/Weekly hiện tại, tiến độ, phần thưởng Linh Thạch + LK bonus.</div></div>
+    <div class="cmd-card" data-kw="karma cong duc nghiep luc grade"><div class="cmd-left"><div class="cmd-name">/karma</div></div><div class="cmd-desc">Xem Công Đức và Nghiệp Lực — ảnh hưởng độ khó Thiên Kiếp.</div></div>
+    <div class="cmd-card" data-kw="guide huong dan help"><div class="cmd-left"><div class="cmd-name">/guide</div><div class="cmd-alias">/hd</div></div><div class="cmd-desc">Hướng dẫn đầy đủ trong game theo từng chủ đề.</div></div>
+  </div>
+</div>
+
+<!-- ════════════════ ADMIN ════════════════ -->
+<div id="tab-admin" class="section">
+  <div class="sh"><div class="sh-icon">🔑</div><div><div class="sh-title">Lệnh Admin / OP</div><div class="sh-sub">Yêu cầu quyền tutien.admin hoặc OP</div></div></div>
+  <div class="alert alert-r">Lệnh admin có thể ảnh hưởng cân bằng server — cẩn thận khi dùng trên máy chủ đông người.</div>
+
+  <div style="margin-top:1rem">
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin setcanhgioi</div><div class="cmd-alias"><span class="cmd-badge b-op">OP</span></div></div><div class="cmd-desc"><code>/ttadmin setcanhgioi &lt;player&gt; &lt;CANH_GIOI&gt;</code> — Đặt cảnh giới thủ công. Ví dụ: CHAN_TIEN, LONG_TOC...</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin give</div><div class="cmd-alias"><span class="cmd-badge b-op">OP</span></div></div><div class="cmd-desc"><code>/ttadmin give &lt;player&gt; &lt;PHABAO_ID&gt; &lt;số&gt;</code> — Cấp Pháp Bảo. Ví dụ: <code>/ttadmin give Steve TRAN_THIEN_GIAP 1</code></div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin setlt</div></div><div class="cmd-desc"><code>/ttadmin setlt &lt;player&gt; &lt;số&gt;</code> — Đặt Linh Thạch cho người chơi.</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin info</div></div><div class="cmd-desc"><code>/ttadmin info &lt;player&gt;</code> — Xem toàn bộ thông tin nhân vật: cảnh giới, LK, Karma, quest, v.v.</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin reset</div></div><div class="cmd-desc"><code>/ttadmin reset &lt;player&gt;</code> — Reset nhân vật về ban đầu. Không thể hoàn tác!</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/ttadmin reload</div></div><div class="cmd-desc">Reload <code>config.yml</code> không cần restart server.</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/bloodmoon</div><div class="cmd-alias"><span class="cmd-badge b-op">Server-wide</span></div></div><div class="cmd-desc"><code>/bloodmoon start|stop|status</code> — Kích hoạt sự kiện Huyết Nguyệt toàn server.</div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/addlinhzone</div></div><div class="cmd-desc"><code>/addlinhzone &lt;tên&gt; [bán_kính]</code> — Tạo vùng Linh Mạch (LK x3.5) tại vị trí đứng. Ví dụ: <code>/addlinhzone LinhSon 20</code></div></div>
+  <div class="cmd-card"><div class="cmd-left"><div class="cmd-name">/mm reload</div><div class="cmd-alias"><span class="cmd-badge b-mm">MythicMobs</span></div></div><div class="cmd-desc">Reload MythicMobs sau khi copy file YAML boss/skill.</div></div>
+  </div>
+
+  <div class="sh" style="margin-top:2rem"><div class="sh-icon">📄</div><div><div class="sh-title">ID Pháp Bảo đặc biệt (cho lệnh give)</div></div></div>
+  <div class="code-block"><span class="cm"># Giáp đặc biệt:</span>
+<span class="st">TRAN_THIEN_GIAP</span>    <span class="cm">← giảm 50% damage khi trong túi</span>
+
+<span class="cm"># Pháp Bảo Bản Mệnh (không mất khi chết):</span>
+<span class="st">BAN_MENH_KIEM</span>      BAN_MENH_GIAP    BAN_MENH_PHONG
+<span class="st">BAN_MENH_NHAC</span>      BAN_MENH_AN      BAN_MENH_CHAU
+
+<span class="cm"># Tier Tiên Phẩm:</span>
+<span class="st">HONG_MONG_PHU</span>      HON_DON_CAU      TAM_TAI_KIEM
+<span class="st">LONG_VUONG_CHAU</span>    PHUONG_HOANG_VU  BAT_QUAT_TRAN</div>
+</div>
+
+<!-- ════════════════ PLACEHOLDERAPI ════════════════ -->
+<div id="tab-placeholder" class="section">
+  <div class="sh"><div class="sh-icon">🏷️</div><div><div class="sh-title">PlaceholderAPI — 30 Placeholder</div><div class="sh-sub">Prefix: %tutien_...% · Cần cài PlaceholderAPI plugin</div></div></div>
+  <div class="alert alert-b">Tất cả placeholder dùng prefix <strong>%tutien_</strong>...<strong>%</strong>. Dùng được với CMI, FeatherBoard, DeluxeChat, TAB, Luckperms prefix, và mọi plugin hỗ trợ PAPI.</div>
+
+  <div class="search-wrap" style="margin-top:1rem"><span class="search-icon">🔍</span><input id="phsearch" placeholder="Tìm placeholder..." oninput="filterPH(this.value)"></div>
+
+  <table class="ph-table" id="ph-table">
+    <thead><tr><th>Placeholder</th><th>Mô tả</th><th>Ví dụ kết quả</th></tr></thead>
+    <tbody>
+      <tr class="ph-group"><td colspan="3">CƠ BẢN — CẢNH GIỚI</td></tr>
+      <tr data-kw="canh gioi stage ten"><td><span class="ph-code">%tutien_stage%</span></td><td>Tên cảnh giới có màu</td><td><span class="ph-ex">§bChân Tiên</span></td></tr>
+      <tr data-kw="canh gioi stage plain khong mau"><td><span class="ph-code">%tutien_stage_plain%</span></td><td>Tên cảnh giới không màu</td><td><span class="ph-ex">Chân Tiên</span></td></tr>
+      <tr data-kw="rank cap so thu tu"><td><span class="ph-code">%tutien_rank%</span></td><td>Số rank hiện tại (1-9)</td><td><span class="ph-ex">3</span></td></tr>
+      <tr data-kw="rank ten so ba tam"><td><span class="ph-code">%tutien_rank_name%</span></td><td>Tên rank (Sơ, Nhị, Tam...)</td><td><span class="ph-ex">Tam</span></td></tr>
+      <tr data-kw="full canh gioi day du"><td><span class="ph-code">%tutien_full%</span></td><td>Cảnh giới đầy đủ (không màu)</td><td><span class="ph-ex">Chân Tiên Tầng 3</span></td></tr>
+      <tr data-kw="full color mau day du"><td><span class="ph-code">%tutien_full_color%</span></td><td>Cảnh giới đầy đủ có màu</td><td><span class="ph-ex">§b§lChân Tiên §fTầng 3</span></td></tr>
+      <tr data-kw="realm gioi nhan linh tien thien"><td><span class="ph-code">%tutien_realm%</span></td><td>Tên giới lớn</td><td><span class="ph-ex">Tiên Giới</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">LINH KHÍ</td></tr>
+      <tr data-kw="linh khi lk so raw"><td><span class="ph-code">%tutien_lk%</span></td><td>LK hiện tại (số nguyên)</td><td><span class="ph-ex">1250000</span></td></tr>
+      <tr data-kw="linh khi lk max toi da"><td><span class="ph-code">%tutien_lk_max%</span></td><td>LK tối đa</td><td><span class="ph-ex">5000000</span></td></tr>
+      <tr data-kw="linh khi lk percent phan tram"><td><span class="ph-code">%tutien_lk_percent%</span></td><td>Phần trăm LK (số nguyên)</td><td><span class="ph-ex">25</span></td></tr>
+      <tr data-kw="linh khi lk bar thanh ky tu progress"><td><span class="ph-code">%tutien_lk_bar%</span></td><td>Thanh LK ký tự ██░░</td><td><span class="ph-ex">§b██░░░░░░░░</span></td></tr>
+      <tr data-kw="linh khi lk short rut gon km mb"><td><span class="ph-code">%tutien_lk_short%</span></td><td>LK rút gọn (K, M, B...)</td><td><span class="ph-ex">1.3M</span></td></tr>
+      <tr data-kw="linh khi lk ready du dot pha"><td><span class="ph-code">%tutien_lk_ready%</span></td><td>LK đủ đột phá? (true/false)</td><td><span class="ph-ex">false</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">LINH THẠCH</td></tr>
+      <tr data-kw="linh thach lt tien"><td><span class="ph-code">%tutien_lt%</span></td><td>Linh Thạch trong túi</td><td><span class="ph-ex">3500</span></td></tr>
+      <tr data-kw="linh thach lt short rut gon"><td><span class="ph-code">%tutien_lt_short%</span></td><td>Linh Thạch rút gọn</td><td><span class="ph-ex">3.5K</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">NHÂN VẬT</td></tr>
+      <tr data-kw="class dao tu kiem phap tu"><td><span class="ph-code">%tutien_class%</span></td><td>Tên class đang chọn</td><td><span class="ph-ex">Kiếm Tu</span></td></tr>
+      <tr data-kw="dao chinh ma si lo"><td><span class="ph-code">%tutien_dao%</span></td><td>Đạo Path</td><td><span class="ph-ex">Chính Đạo</span></td></tr>
+      <tr data-kw="toc long nguoi linh than"><td><span class="ph-code">%tutien_toc%</span></td><td>Tên Tộc (không màu)</td><td><span class="ph-ex">Long Tộc</span></td></tr>
+      <tr data-kw="toc color mau"><td><span class="ph-code">%tutien_toc_color%</span></td><td>Tên Tộc có màu</td><td><span class="ph-ex">§6§l🐉 Long Tộc</span></td></tr>
+      <tr data-kw="linh can lingcan hoa thuy kim"><td><span class="ph-code">%tutien_lingcan%</span></td><td>Linh Căn (phân tách bởi -)</td><td><span class="ph-ex">Hỏa-Thủy</span></td></tr>
+      <tr data-kw="gongfa cong phap kieu"><td><span class="ph-code">%tutien_gongfa%</span></td><td>Công Pháp đang dùng</td><td><span class="ph-ex">Thiên Long Kinh</span></td></tr>
+      <tr data-kw="thien menh destiny ki tai chien hoa"><td><span class="ph-code">%tutien_thienmeng%</span></td><td>Thiên Mệnh</td><td><span class="ph-ex">§b⚡ Mệnh Kỳ</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">CHIẾN ĐẤU & THÀNH TÍCH</td></tr>
+      <tr data-kw="kills mob giet"><td><span class="ph-code">%tutien_kills%</span></td><td>Số mob đã giết</td><td><span class="ph-ex">1500</span></td></tr>
+      <tr data-kw="deaths chet so lan"><td><span class="ph-code">%tutien_deaths%</span></td><td>Số lần chết</td><td><span class="ph-ex">12</span></td></tr>
+      <tr data-kw="boss kills boss ha guc"><td><span class="ph-code">%tutien_boss_kills%</span></td><td>Số Boss Arena đã hạ</td><td><span class="ph-ex">7</span></td></tr>
+      <tr data-kw="breakthrough success dot pha thanh cong"><td><span class="ph-code">%tutien_bt_success%</span></td><td>Số lần đột phá thành công</td><td><span class="ph-ex">34</span></td></tr>
+      <tr data-kw="breakthrough fail that bai"><td><span class="ph-code">%tutien_bt_fail%</span></td><td>Số lần đột phá thất bại</td><td><span class="ph-ex">5</span></td></tr>
+      <tr data-kw="kd ratio kills deaths"><td><span class="ph-code">%tutien_kd%</span></td><td>K/D ratio PvP</td><td><span class="ph-ex">2.50</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">KARMA</td></tr>
+      <tr data-kw="karma cong duc good"><td><span class="ph-code">%tutien_karma_cong%</span></td><td>Công Đức (rút gọn)</td><td><span class="ph-ex">12.5K</span></td></tr>
+      <tr data-kw="karma nghiep luc evil bad"><td><span class="ph-code">%tutien_karma_nghiep%</span></td><td>Nghiệp Lực (rút gọn)</td><td><span class="ph-ex">500</span></td></tr>
+      <tr data-kw="karma grade xep hang thien nhan ma nhan"><td><span class="ph-code">%tutien_karma_grade%</span></td><td>Xếp hạng Karma</td><td><span class="ph-ex">§aThiện Nhân</span></td></tr>
+
+      <tr class="ph-group"><td colspan="3">TRẠNG THÁI</td></tr>
+      <tr data-kw="in trial thien kiep dang tien hanh"><td><span class="ph-code">%tutien_in_trial%</span></td><td>Đang trong Thiên Kiếp?</td><td><span class="ph-ex">true</span></td></tr>
+      <tr data-kw="pending breakthrough lk day cho doi"><td><span class="ph-code">%tutien_pending_bt%</span></td><td>LK đầy, chờ đột phá?</td><td><span class="ph-ex">false</span></td></tr>
+      <tr data-kw="aura on off bat tat"><td><span class="ph-code">%tutien_aura%</span></td><td>Trạng thái aura</td><td><span class="ph-ex">on</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sh"><div class="sh-icon">💡</div><div><div class="sh-title">Ví dụ sử dụng thực tế</div></div></div>
+  <div class="code-block"><span class="cm"># Prefix trên đầu người chơi (TAB plugin):</span>
+<span class="ph">%tutien_toc_color%</span> <span class="ph">%tutien_full_color%</span>
+
+<span class="cm"># Scoreboard LK (FeatherBoard):</span>
+&3Linh Khí: <span class="ph">%tutien_lk_bar%</span>
+&7(<span class="ph">%tutien_lk_short%</span> / <span class="ph">%tutien_lk_short_max%</span>) <span class="ph">%tutien_lk_percent%</span>%
+
+<span class="cm"># Chat format (EssentialsX/DeluxeChat):</span>
+[<span class="ph">%tutien_realm%</span>] <span class="ph">%player_name%</span>: {message}
+
+<span class="cm"># Điều kiện hiện nút "Đột Phá" (GUI plugin):</span>
+<span class="ph">%tutien_lk_ready%</span> == true
+
+<span class="cm"># Karma trên bảng xếp hạng:</span>
+<span class="ph">%tutien_karma_grade%</span> | CD: <span class="ph">%tutien_karma_cong%</span> | NL: <span class="ph">%tutien_karma_nghiep%</span></div>
+</div>
+
+<!-- ════════════════ SO SÁNH ════════════════ -->
+<div id="tab-compare" class="section">
+  <div class="sh"><div class="sh-icon">⚖️</div><div><div class="sh-title">TuTien-FREE vs TuTien-PREMIUM</div><div class="sh-sub">Cùng 1 file JAR — khác ở YAML MythicMobs và version MM server cần</div></div></div>
+
+  <table class="diff-table">
+    <thead><tr><th>Tính năng</th><th>FREE</th><th>PREMIUM</th></tr></thead>
+    <tbody>
+      <tr><td><strong>MythicMobs yêu cầu</strong></td><td class="part">Free 4.x hoặc 5.x Free</td><td class="yes">Premium 5.x</td></tr>
+      <tr><td><strong>MythicLib</strong></td><td class="no">Không cần</td><td class="yes">Cần MythicLib 3.x</td></tr>
+      <tr><td><strong>Số lượng Boss Skills</strong></td><td class="part">21 skills</td><td class="yes">28 skills</td></tr>
+      <tr><td><strong>Phase System (boss chuyển giai đoạn)</strong></td><td class="no">Không</td><td class="yes">Có (2-5 phase/boss)</td></tr>
+      <tr><td><strong>Effect:Beam (tia Omega)</strong></td><td class="no">Không</td><td class="yes">Có</td></tr>
+      <tr><td><strong>ArmorToughness attribute</strong></td><td class="no">Không</td><td class="yes">Có</td></tr>
+      <tr><td><strong>MythicLib Stats Sync</strong></td><td class="no">Không</td><td class="yes">6 custom stats</td></tr>
+      <tr><td><strong>Tộc/Linh Căn MM effect</strong></td><td class="no">Không có trong YAML</td><td class="yes">16 effect skills</td></tr>
+      <tr><td><strong>PlaceholderAPI</strong></td><td class="yes">30 placeholder</td><td class="yes">30 placeholder</td></tr>
+      <tr><td><strong>Vanilla fallback (không có MM)</strong></td><td class="yes">Có</td><td class="yes">Có</td></tr>
+      <tr><td><strong>Trấn Thiên Giáp passive</strong></td><td class="yes">Có</td><td class="yes">Có</td></tr>
+      <tr><td><strong>KarmaManager, TamMa, Quest</strong></td><td class="yes">Có</td><td class="yes">Có</td></tr>
+      <tr><td><strong>Phù hợp</strong></td><td class="part">Server không có MM Premium</td><td class="yes">Server đầy đủ MM Premium</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-g">Cả 2 bản đều dùng chung file TuTienPlugin.jar — chỉ khác YAML copy vào MythicMobs. Không có MM thì tự fallback vanilla, không crash.</div>
+</div>
+
+</main>
+
+<script>
+// Theme
+const THEME = localStorage.getItem('tt_theme') || 'dark';
+document.documentElement.setAttribute('data-theme', THEME);
+document.getElementById('tbtn').textContent = THEME === 'dark' ? '☀️' : '🌙';
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('tt_theme', next);
+  document.getElementById('tbtn').textContent = next === 'dark' ? '☀️' : '🌙';
+}
+
+// Tab switching
+function goTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('on'));
+  document.getElementById('tab-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Search player commands
+function filterCmds(scope, q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('#player-cmds .cmd-card').forEach(c => {
+    const kw = (c.dataset.kw || '') + ' ' + c.textContent.toLowerCase();
+    c.style.display = term && !kw.includes(term) ? 'none' : '';
+  });
+}
+
+// Search placeholders
+function filterPH(q) {
+  const term = q.toLowerCase().trim();
+  document.querySelectorAll('#ph-table tbody tr').forEach(tr => {
+    if (tr.classList.contains('ph-group')) { tr.style.display = ''; return; }
+    const kw = (tr.dataset.kw || '') + ' ' + tr.textContent.toLowerCase();
+    tr.style.display = term && !kw.includes(term) ? 'none' : '';
+  });
+}
+
+// Copy button
+function cp(btn) {
+  const block = btn.parentElement;
+  const text = block.textContent.replace('Copy', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied'; btn.style.color = 'var(--gn)';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 1800);
+  });
+}
+
+// URL hash navigation
+const hash = location.hash.replace('#', '');
+if (hash) {
+  const btn = document.querySelector(`.ntab[onclick*="${hash}"]`);
+  if (btn) goTab(hash, btn);
+}
+</script>
+</body>
+</html>
